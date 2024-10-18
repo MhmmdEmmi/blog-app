@@ -1,4 +1,17 @@
+import { useState } from "react";
+
 export default function RegisterPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  async function register(ev) {
+    ev.preventDefault();
+    await fetch("http://localhost:4000/register", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   return (
     <div class="flex flex-col items-center justify-center py-20">
       <div class="max-h-auto mx-auto w-80">
@@ -9,7 +22,7 @@ export default function RegisterPage() {
           </p>
         </div>
         {/* Login form   */}
-        <form class="w-full">
+        <form class="w-full" onSubmit={register}>
           <div class="mb-10 space-y-3">
             <div class="space-y-2">
               {/* Email */}
@@ -41,6 +54,8 @@ export default function RegisterPage() {
                   id="username"
                   placeholder="نام کاربری خود را وارد نمایید"
                   name="username"
+                  value={username}
+                  onChange={(ev) => setUsername(ev.target.value)}
                 />
               </div>
               {/* Password */}
@@ -57,13 +72,12 @@ export default function RegisterPage() {
                   placeholder="رمز عبور خود را وارد نمایید"
                   name="password"
                   type="password"
+                  value={password}
+                  onChange={(ev) => setPassword(ev.target.value)}
                 />
               </div>
             </div>
-            <button
-              class="ring-offset-background focus-visible:ring-ring flex h-10 w-full items-center justify-center whitespace-nowrap rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-              type="submit"
-            >
+            <button class="ring-offset-background focus-visible:ring-ring flex h-10 w-full items-center justify-center whitespace-nowrap rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
               ثبت نام
             </button>
           </div>
