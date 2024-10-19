@@ -1,4 +1,28 @@
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
+
 export default function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [redirect, setRedirect] = useState(false);
+
+  // User login
+  async function login(ev) {
+    ev.preventDefault();
+    const response = await fetch("http://localhost:4000/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    if (response.ok) setRedirect(true);
+    else alert("ورود انجام نشد!");
+  }
+  // /User login
+
+  if (redirect) return <Navigate to={"/"} />;
+
   return (
     <div class="flex flex-col items-center justify-center py-20">
       <div class="max-h-auto mx-auto w-80">
@@ -7,7 +31,7 @@ export default function LoginPage() {
           <p class="text-sm text-gray-500">وارد حساب کاربری خود شوید!</p>
         </div>
         {/* Login form   */}
-        <form class="w-full">
+        <form class="w-full" onSubmit={login}>
           <div class="mb-10 space-y-3">
             <div class="space-y-2">
               {/* Username */}
@@ -23,6 +47,8 @@ export default function LoginPage() {
                   id="username"
                   placeholder="نام کاربری خود را وارد نمایید"
                   name="username"
+                  value={username}
+                  onChange={(ev) => setUsername(ev.target.value)}
                 />
               </div>
               {/* Password */}
@@ -39,6 +65,8 @@ export default function LoginPage() {
                   placeholder="رمز عبور خود را وارد نمایید"
                   name="password"
                   type="password"
+                  value={password}
+                  onChange={(ev) => setPassword(ev.target.value)}
                 />
               </div>
             </div>
