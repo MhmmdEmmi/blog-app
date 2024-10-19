@@ -3,15 +3,19 @@ import { useState } from "react";
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  // User registration
   async function register(ev) {
     ev.preventDefault();
-    await fetch("http://localhost:4000/register", {
+    const response = await fetch("http://localhost:4000/register", {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: { "Content-Type": "application/json" },
     });
-  }
 
+    if (response.status === 200) alert("ثبت نام با موفقیت انجام شد.");
+    else alert("خطایی رخ داده است! لطفا مجددا تلاش کنید");
+  }
+  // /User registration
   return (
     <div class="flex flex-col items-center justify-center py-20">
       <div class="max-h-auto mx-auto w-80">
