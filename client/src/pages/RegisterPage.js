@@ -13,7 +13,8 @@ export default function RegisterPage() {
       headers: { "Content-Type": "application/json" },
     });
 
-    if (response.status === 200) alert("ثبت نام با موفقیت انجام شد.");
+    if (response.status === 200)
+      alert("ثبت نام با موفقیت انجام شد. وارد شوید..");
     else alert("خطایی رخ داده است! لطفا مجددا تلاش کنید");
   }
   // /User registration
