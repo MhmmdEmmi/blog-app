@@ -1,6 +1,18 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import jalaali from "jalaali-js";
+
+// Array to map day numbers to Persian names (you can change to English if needed)
+const daysOfWeek = [
+  "یکشنبه",
+  "دوشنبه",
+  "سه‌شنبه",
+  "چهارشنبه",
+  "پنج‌شنبه",
+  "جمعه",
+  "شنبه",
+];
 
 export default function PostPage() {
   const [postInfo, setPostInfo] = useState(null);
@@ -17,13 +29,29 @@ export default function PostPage() {
 
   if (!postInfo) return "";
 
+  // Convert the Gregorian date to Jalali
+  const gregorianDate = new Date(postInfo.createdAt);
+  const jalaliDate = jalaali.toJalaali(gregorianDate);
+
+  // Get the Jalali day of the week (Jalaali-js does not provide this directly, so we use the Gregorian day)
+  const dayOfWeek = daysOfWeek[gregorianDate.getDay()];
+
+  // Extract time in HH:MM format
+  const time = gregorianDate.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // Format Jalali date as YYYY/MM/DD
+  const formattedJalaliDate = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`;
+
   return (
     // Post page
     <div className="space-y-2">
       {/* Title */}
       <h1 className="text-center text-3xl font-bold">{postInfo.title}</h1>
       {/* Created date & time */}
-      <time className="block text-center text-sm">{postInfo.createdAt}</time>
+      <time className="block text-center text-sm">{`${formattedJalaliDate}, ${dayOfWeek}, ${time}`}</time>
       {/* Author */}
       <div className="block text-center text-sm">
         {postInfo.author.username}

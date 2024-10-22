@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import jalaali from "jalaali-js";
 
 export default function Post({
   _id,
@@ -9,6 +10,13 @@ export default function Post({
   createdAt,
   author,
 }) {
+  // Convert the Gregorian date to Jalali
+  const gregorianDate = new Date(createdAt);
+  const jalaliDate = jalaali.toJalaali(gregorianDate);
+
+  // Format Jalali date as YYYY/MM/DD
+  const formattedJalaliDate = `${jalaliDate.jy}/${jalaliDate.jm}/${jalaliDate.jd}`;
+
   return (
     <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-5 mb-7">
       {/* Image */}
@@ -26,7 +34,7 @@ export default function Post({
         <p className="flex gap-2 my-3 text-zinc-500 text-xs font-bold">
           {/* Author */}
           <a className="text-zinc-800">{author.username}</a>
-          <time>{createdAt}</time>
+          <time>{formattedJalaliDate}</time>
         </p>
         {/* Summary of the post */}
         <p className="leading-5">{summary}</p>
