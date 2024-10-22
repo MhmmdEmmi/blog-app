@@ -21,7 +21,6 @@ export default function Header() {
       credentials: "include",
       method: "POST",
     });
-    // setUsername(null);
     setUserInfo(null);
   }
 
@@ -29,14 +28,17 @@ export default function Header() {
 
   return (
     <header className="flex justify-between items-center mt-5 mb-12">
-      <Link to="/" className="font-bold">
+      <Link to="/" className="text-lg font-bold">
         کافه بلاگ
       </Link>
       <nav className="flex gap-4">
         {username && (
           <>
+            <span>
+              سـلام، <span className="font-medium">{username}</span>
+            </span>
             <Link to="/create">ایجاد پست جدید</Link>
-            <a onClick={logout}>خروج</a>
+            <Link onClick={logout}>خروج</Link>
           </>
         )}
         {!username && (
