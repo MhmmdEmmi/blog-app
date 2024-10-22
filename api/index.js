@@ -11,7 +11,7 @@ var jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const uploadMiddleware = multer({ dest: "uploads/" });
-const fs = require("fs");
+const fs = require("fs"); // as a file system
 
 const app = express();
 
