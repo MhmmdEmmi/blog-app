@@ -19,17 +19,19 @@ export default function PostPage() {
 
   return (
     // Post page
-    <div>
+    <div className="space-y-2">
       {/* Title */}
       <h1 className="text-center text-3xl font-bold">{postInfo.title}</h1>
       {/* Created date & time */}
-      <time className="block text-center">{postInfo.createdAt}</time>
+      <time className="block text-center text-sm">{postInfo.createdAt}</time>
       {/* Author */}
-      <div>{postInfo.author.username}</div>
+      <div className="block text-center text-sm">
+        {postInfo.author.username}
+      </div>
 
       {/* Edit post */}
       {userInfo.id === postInfo.author._id && (
-        <div className="my-4">
+        <div className="py-4">
           <Link
             to={`/edit/${postInfo._id}`}
             className="ring-offset-background focus-visible:ring-ring flex h-10 w-full items-center justify-center whitespace-nowrap rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
