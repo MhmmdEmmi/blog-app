@@ -1,34 +1,49 @@
-import { useState } from "react";
-import "react-quill/dist/quill.snow.css";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Editor from "../Editor";
+import { Navigate, useParams } from "react-router-dom";
 
-export default function CreatePost() {
+export default function EditPost() {
+  const { id } = useParams();
+
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  async function createNewPost(ev) {
+  useEffect(() => {
+    fetch("http://localhost:4000/post/" + id).then((response) => {
+      response.json().then((postInfo) => {
+        setTitle(postInfo.title);
+        setContent(postInfo.content);
+        setSummary(postInfo.summary);
+      });
+    });
+  }, []);
+
+  async function updatePost(ev) {
+    ev.preventDefault();
+
     const data = new FormData();
     data.set("title", title);
     data.set("summary", summary);
     data.set("content", content);
-    data.set("file", files[0]);
+    data.set("id", id);
+    if (files?.[0]) {
+      data.set("file", files?.[0]);
+    }
 
-    ev.preventDefault();
-    console.log(files);
     const response = await fetch("http://localhost:4000/post", {
-      method: "POST",
+      method: "PUT",
       body: data,
       credentials: "include",
     });
-
-    if (response.ok) setRedirect(true);
+    if (response.ok) {
+      setRedirect(true);
+    }
   }
 
-  if (redirect) return <Navigate to={"/"} />;
+  if (redirect) return <Navigate to={"/post/" + id} />;
 
   return (
     <div class="flex flex-col items-center justify-center py-20">
@@ -40,7 +55,7 @@ export default function CreatePost() {
           </p>
         </div>
         {/* create new post form   */}
-        <form class="w-full" onSubmit={createNewPost}>
+        <form class="w-full" onSubmit={updatePost}>
           <div class="mb-10 space-y-3">
             <div class="space-y-2">
               {/* Title */}
@@ -101,11 +116,12 @@ export default function CreatePost() {
                 >
                   متن پست
                 </label>
+
                 <Editor onChange={setContent} value={content} />
               </div>
             </div>
             <button class="ring-offset-background focus-visible:ring-ring flex h-10 w-full items-center justify-center whitespace-nowrap rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
-              ایجـاد پست
+              ویـرایش پست
             </button>
           </div>
         </form>
