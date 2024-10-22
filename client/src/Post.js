@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+
 export default function Post({
+  _id,
   title,
   summary,
   cover,
@@ -7,14 +10,18 @@ export default function Post({
   author,
 }) {
   return (
-    <div className="grid grid-cols-3 gap-5 mb-7">
+    <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-5 mb-7">
       {/* Image */}
-      <div className="col-span-1">
-        <img src={"http://localhost:4000/" + cover} alt="" />
+      <div className=" md:col-span-1">
+        <Link to={`/post/${_id}`}>
+          <img src={"http://localhost:4000/" + cover} alt="" />
+        </Link>
       </div>
       {/* Texts */}
-      <div className="col-span-2">
-        <h2 className="text-xl font-bold">{title}</h2>
+      <div className="md:col-span-2 ">
+        <Link to={`/post/${_id}`}>
+          <h2 className="text-xl font-bold">{title}</h2>
+        </Link>
         {/* Information paragraph */}
         <p className="flex gap-2 my-3 text-zinc-500 text-xs font-bold">
           {/* Author */}
